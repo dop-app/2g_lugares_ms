@@ -1,0 +1,16 @@
+version: "2"
+services:
+  lugares_ms:
+    build: .
+    ports:
+      - "3000:3000"
+    links:
+      - lugares_db
+    depends_on:
+      - lugares_db
+  lugares_db:
+    image: mongo:latest
+    volumes:
+      - /data/mongodb/db:/data/db
+    ports:
+      - "27017:27017"
