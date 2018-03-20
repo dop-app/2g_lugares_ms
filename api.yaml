@@ -1,0 +1,217 @@
+swagger: "2.0"
+
+info:
+  version: 1.0.0
+  title: Lugares
+  description: Una Api sencilla para funcionalidad relacionada con lugares
+  license:
+    name: Software Architecture 2018-I
+schemes:
+  - https
+host: 35.227.46.47:4000
+basePath: /
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /lugares:
+    post:
+      summary: Crear un lugar
+      operationId: create_a_lugar
+      parameters: 
+        - name: lugar
+          in: body
+          required: true
+          description: Objeto Lugar
+          schema:
+            $ref: '#/definitions/LugarInput'
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+    get:
+      summary: Devuelve todos los lugares
+      operationId: list_all_lugares
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/LugaresList'
+        '406':
+          description: Not Acceptable (Invalid Params)
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+            
+  /lugares/{id}:
+    get:
+      summary: Retorna los datos de un lugar por su Id
+      operationId: read_a_lugar
+      parameters:
+        - name: id
+          in: path
+          description: El id del lugar a retornar
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/Lugar'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '406':
+            description: Not Acceptable (Invalid Params)
+            schema:
+              $ref: '#/definitions/ErrorModel'
+        '500':
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+
+    put:
+      summary: Actualiza un lugar dado su id
+      operationId: update_a_lugar
+      parameters:
+        - name: id
+          in: path
+          description: El id del lugar a retornar
+          required: true
+          type: integer
+        - name: student
+          in: body
+          required: true
+          description: Objeto Lugar
+          schema:
+            $ref: '#/definitions/LugarInput'
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '406':
+            description: Not Acceptable (Invalid Params)
+            schema:
+              $ref: '#/definitions/ErrorModel'
+        '500':
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+
+    delete:
+      summary: Elimina un lugar dado su ID
+      operationId: delete_a_lugar
+      parameters:
+        - name: id
+          in: path
+          description: El id del lugar a retornar
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Ok
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '406':
+            description: Not Acceptable (Invalid Params)
+            schema:
+              $ref: '#/definitions/ErrorModel'
+        '500':
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+
+definitions:
+
+  # Lugares
+  Lugar:
+    type: object
+    properties:
+      id:
+        type: integer
+      nombre:
+        type: string
+      nivelPrecio:
+        type: string
+      ubicacion:
+        type: object
+      direccion:
+        type: string
+      horario:
+        type: string
+      calificacion:
+        type: integer
+      tipo:
+        type: string
+      ciudad: 
+        type: string
+      pais:
+        type: string
+    
+
+  LugarInput:
+    type: object
+    properties:
+      nombre:
+        type: string
+      nivelPrecio:
+        type: string
+      ubicacion:
+        type: object
+      direccion:
+        type: string
+      horario:
+        type: string
+      calificacion:
+        type: integer
+      tipo:
+        type: string
+      ciudad: 
+        type: string
+      pais:
+        type: string
+
+  LugaresList:
+    type: object
+    required:
+      - total
+      - list
+    properties:
+      total:
+        type: number
+      list:
+        type: array
+        items:
+          $ref: '#/definitions/Lugar'
+
+# Errors
+  ErrorModel:
+    type: object
+    required:
+      - message
+      - code
+    properties:
+      message:
+        type: string
+      code:
+        type: number
+      description:
+        type: object
+  
