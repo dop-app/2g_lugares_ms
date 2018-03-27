@@ -15,7 +15,10 @@ var LugarSchema = new Schema({
     enum: ['FREE', 'INEXPENSIVE', 'MODERATE', 'EXPENSIVE', 'VERY_EXPENSIVE','UNKNOWN'],
     default: ['UNKNOWN']    
   },
-    ubicacion: mongoose.Schema.Types.Point,
+    ubicacion: {
+    	type: mongoose.Schema.Types.Point,
+    	index: '2dsphere'
+    },
 
     direccion: {
     type: String   

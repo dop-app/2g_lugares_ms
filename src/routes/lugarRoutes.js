@@ -12,4 +12,7 @@ module.exports = function(app) {
     .get(lugar.read_a_lugar)
     .put(lugar.update_a_lugar)
     .delete(lugar.delete_a_lugar);
+
+  app.route('/lugarin/:lugarLat&:lugarLon&:lugarLat1&:lugarLon1')
+	.get(lugar.findLocation);
 };
