@@ -1,10 +1,16 @@
 'use strict';
 var GeoJSON = require('mongoose-geojson-schema');
 var mongoose = require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 var Schema = mongoose.Schema;
 
 
-var LugarSchema = new Schema({
+var LugarSchema = new Schema(
+{
+
+  _id: Number,
+
+
   nombre: {
     type: String,
     required: 'Por favor ingrese el nombre del lugar'
@@ -40,6 +46,7 @@ var LugarSchema = new Schema({
     pais: {
     type: String   
   }  
-});
+},{ _id: false });
+LugarSchema.plugin(AutoIncrement);
 
 module.exports = mongoose.model('Lugares', LugarSchema);
