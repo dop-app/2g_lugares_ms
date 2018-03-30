@@ -6,17 +6,38 @@ info:
   description: Una Api sencilla para funcionalidad relacionada con lugares
   license:
     name: Software Architecture 2018-I
-schemes:
-  - https
-host: 35.227.46.47:4000
+  contact:
+    email: dahoyosr@unal.edu.co
+host: 35.227.46.47:3000
 basePath: /
-consumes:
-  - application/json
-produces:
-  - application/json
+tags:
+- name: Lugar
+  description: Lugares para las citas
+schemes:
+- http
 paths:
   /lugares:
+    get:
+      tags:
+        - Lugar
+      summary: Devuelve todos los lugares
+      operationId: list_all_lugares
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/LugaresList'
+        '406':
+          description: Not Acceptable (Invalid Params)
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorModel'
     post:
+      tags:
+        - Lugar
       summary: Crear un lugar
       operationId: create_a_lugar
       parameters: 
@@ -37,25 +58,11 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/ErrorModel'
-    get:
-      summary: Devuelve todos los lugares
-      operationId: list_all_lugares
-      responses:
-        '200':
-          description: Ok
-          schema:
-            $ref: '#/definitions/LugaresList'
-        '406':
-          description: Not Acceptable (Invalid Params)
-          schema:
-            $ref: '#/definitions/ErrorModel'
-        '500':
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorModel'
             
-  /lugares/{id}:
+  /lugares/:id:
     get:
+      tags:
+      - Lugar
       summary: Retorna los datos de un lugar por su Id
       operationId: read_a_lugar
       parameters:
@@ -83,6 +90,8 @@ paths:
             $ref: '#/definitions/ErrorModel'
 
     put:
+      tags:
+        - Lugar
       summary: Actualiza un lugar dado su id
       operationId: update_a_lugar
       parameters:
@@ -91,7 +100,7 @@ paths:
           description: El id del lugar a retornar
           required: true
           type: integer
-        - name: student
+        - name: lugar
           in: body
           required: true
           description: Objeto Lugar
@@ -114,6 +123,8 @@ paths:
             $ref: '#/definitions/ErrorModel'
 
     delete:
+      tags: 
+        - Lugar
       summary: Elimina un lugar dado su ID
       operationId: delete_a_lugar
       parameters:
@@ -137,56 +148,168 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/ErrorModel'
+  /lugarin/:lugarLat&:lugarLon&:lugarLat1&:lugarLon1 :
+    get:
+      tags:
+      - Lugar
+      summary: Retorna una lista de lugares cercanos
+      operationId: lugar.findLocation
+      parameters:
+        - name: lugarLat
+          in: path
+          description: Latitud de la ubicaciÃ³n 1
+          required: true
+          type: integer
+        - name: lugarLon
+          in: path
+          description: Longitud de la ubicaciÃ³n 1
+          required: true
+          type: integer
+        - name: lugarLat1
+          in: path
+          description: Latitud de la ubicaciÃ³n 2
+          required: true
+          type: integer
+        - name: lugarLon1
+          in: path
+          description: Longitud de la ubicaciÃ³n 2
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/LugaresList'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '406':
+            description: Not Acceptable (Invalid Params)
+            schema:
+              $ref: '#/definitions/ErrorModel'
+        '500':
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorModel'
 
 definitions:
 
   # Lugares
   Lugar:
     type: object
+    required:
+      - nombre
+      - ubicacion
+      - direccion
+      
     properties:
       id:
-        type: integer
+        type: string
+        example: "5abbb61b57f883000f8b08aa"
       nombre:
         type: string
+        example: mi casita
       nivelPrecio:
         type: string
+        enum: [FREE, INEXPENSIVE, MODERATE, EXPENSIVE, VERY_EXPENSIVE, UNKNOWN]
+        example: FREE
+        default: UNKNOWN
       ubicacion:
         type: object
+        properties:
+          type: 
+            type: string
+            default: "Point"
+          coordinates: 
+            type: array
+            items:
+              type: integer
+            minItems: 2
+            maxItems: 2
+          index:
+            type: string
+            default: "2dsphere"
+        example:  
+            type: "Point"
+            coordinates: [4.746817, -74.087597]
+            index: "2dsphere"
       direccion:
         type: string
+        example: Avenida siempre viva 123
       horario:
         type: string
+        example: L-V:8-17;S-D:8-15
       calificacion:
         type: integer
+        minimum: 1
+        maximum: 5
+        example: 4.5
       tipo:
         type: string
+        example: restaurante
       ciudad: 
         type: string
+        example: BogotÃ¡
       pais:
         type: string
+        example: Colombia
     
 
   LugarInput:
     type: object
+    required:
+      - nombre
+      - ubicacion
+      - direccion
     properties:
       nombre:
         type: string
+        example: mi casita
       nivelPrecio:
         type: string
+        enum: [FREE, INEXPENSIVE, MODERATE, EXPENSIVE, VERY_EXPENSIVE, UNKNOWN]
+        example: FREE
+        default: UNKNOWN
       ubicacion:
         type: object
+        properties:
+          type: 
+            type: string
+            default: "Point"
+          coordinates: 
+            type: array
+            items:
+              type: integer
+            minItems: 2
+            maxItems: 2
+          index:
+            type: string
+            default: "2dsphere"
+        example:  
+            type: "Point"
+            coordinates: [4.746817, -74.087597]
+            index: "2dsphere"
       direccion:
         type: string
+        example: Avenida siempre viva 123
       horario:
         type: string
+        example: L-V:8-17;S-D:8-15
       calificacion:
         type: integer
+        minimum: 1
+        maximum: 5
+        example: 4.5
       tipo:
         type: string
+        example: restaurante
       ciudad: 
         type: string
+        example: BogotÃ¡
       pais:
         type: string
+        example: Colombia
 
   LugaresList:
     type: object
@@ -214,4 +337,3 @@ definitions:
         type: number
       description:
         type: object
-  
