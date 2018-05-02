@@ -3,7 +3,7 @@ services:
   lugares_ms:
     build: .
     ports:
-      - "3000:3000"
+      - "4005:3000"
     links:
       - lugares_db
     depends_on:
