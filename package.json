@@ -28,7 +28,9 @@
   "dependencies": {
     "@turf/turf": "^5.1.6",
     "express": "^4.16.3",
-    "mongoose": "^5.0.10",
-    "mongoose-geojson-schema": "^2.1.2"
+    "mongoose": "^5.0.17",
+    "mongoose-geojson-schema": "^2.1.2",
+    "mongoose-sequence": "^4.0.1",
+    "mongoose-sequence-plugin": "^1.0.5"
   }
 }
