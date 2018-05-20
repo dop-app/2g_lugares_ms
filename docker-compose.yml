@@ -5,10 +5,10 @@ services:
     ports:
       - "4005:3000"
     links:
-      - lugares_db
+      - lugares-db
     depends_on:
-      - lugares_db
-  lugares_db:
+      - lugares-db
+  lugares-db:
     image: mongo:latest
     volumes:
       - /data/mongodb/db:/data/db
