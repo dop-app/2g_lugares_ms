@@ -1,6 +1,6 @@
 version: "2"
 services:
-  lugares_ms:
+  lugares-ms:
     build: .
     ports:
       - "4005:3000"

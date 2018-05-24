@@ -1,7 +1,7 @@
 'use strict';
 var turf = require('@turf/turf')
 var mongoose = require('mongoose'),
-  Lugar = mongoose.model('Lugares');
+  Lugar = mongoose.model('Lugar');
 
 exports.list_all_lugares = function(req, res) {
   Lugar.find({}, function(err, lugar) {
@@ -13,11 +13,17 @@ exports.list_all_lugares = function(req, res) {
 
 
 exports.create_a_lugar = function(req, res) {
+  console.log(req.body);
   var new_lugar = new Lugar(req.body);
+  console.log(new_lugar);
   new_lugar.save(function(err, lugar) {
     if (err)
+    {
       res.send(err);
-    res.json(lugar);
+      console.log(err);
+    }
+    console.log('Lugar exitosamente creado');
+    res.json(lugar);    
   });
 };
 
@@ -80,7 +86,11 @@ exports.findLocation= function(req, res) {
 exports.update_a_lugar = function(req, res) {
   Lugar.findOneAndUpdate({_id: req.params.lugarId}, req.body, {new: true}, function(err, lugar) {
     if (err)
-      res.send(err);
+      {
+        res.send(err);
+        console.log(err);
+      }
+    console.log('Lugar exitosamente actualizado');
     res.json(lugar);
   });
 };
@@ -88,12 +98,15 @@ exports.update_a_lugar = function(req, res) {
 
 exports.delete_a_lugar = function(req, res) {
 
-
   Lugar.remove({
     _id: req.params.lugarId
   }, function(err, lugar) {
     if (err)
-      res.send(err);
+      {
+        res.send(err);
+        console.log(err);
+      }
+    console.log('Lugar exitosamente eliminado');
     res.json({ message: 'Lugar exitosamente eliminado' });
   });
 };

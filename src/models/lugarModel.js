@@ -10,7 +10,6 @@ var LugarSchema = new Schema(
 
   _id: Number,
 
-
   nombre: {
     type: String,
     required: 'Por favor ingrese el nombre del lugar'
@@ -49,4 +48,4 @@ var LugarSchema = new Schema(
 },{ _id: false });
 LugarSchema.plugin(AutoIncrement);
 
-module.exports = mongoose.model('Lugares', LugarSchema);
+module.exports = mongoose.model('Lugar', LugarSchema);
